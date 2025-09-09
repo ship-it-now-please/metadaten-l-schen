@@ -90,6 +90,16 @@ export function MetadataRemover() {
         // Draw image without EXIF data - this completely strips all metadata
         ctx?.drawImage(img, 0, 0)
         
+        // For PNG files, we need to ensure no text chunks are preserved
+        let outputType = file.type
+        let quality = 0.95
+        
+        // For PNG, we might want to convert to JPEG to ensure complete metadata removal
+        if (file.type === 'image/png') {
+          outputType = 'image/jpeg'
+          quality = 0.92
+        }
+        
         // Convert to blob with high quality but no metadata
         canvas.toBlob((blob) => {
           if (blob) {
@@ -99,7 +109,7 @@ export function MetadataRemover() {
           } else {
             reject(new Error('Canvas conversion failed'))
           }
-        }, file.type, 0.95)
+        }, outputType, quality)
       }
 
       img.onerror = () => reject(new Error('Image loading failed'))
@@ -257,6 +267,11 @@ export function MetadataRemover() {
           <p className="text-green-700 mb-4">
             Ihre Datei wurde verarbeitet und alle Metadaten wurden sicher entfernt. 
             Die Dateiqualität bleibt unverändert.
+            {file?.type === 'image/png' && (
+              <span className="block mt-2 text-sm text-orange-700">
+                <strong>Hinweis:</strong> PNG-Dateien werden zu JPEG konvertiert, um alle Metadaten vollständig zu entfernen.
+              </span>
+            )}
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <button

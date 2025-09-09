@@ -31,7 +31,19 @@ export function MetadataReader() {
 
     try {
       if (selectedFile.type.startsWith('image/')) {
-        const exifData = await parse(selectedFile)
+        const exifData = await parse(selectedFile, {
+          tiff: true,
+          xmp: true,
+          icc: true,
+          jfif: true,
+          ihdr: true,
+          iptc: true,
+          gps: true,
+          exif: true,
+          mergeOutput: false,
+          translateKeys: false,
+          reviveValues: false
+        })
         setMetadata(exifData || {})
         
         // Track successful metadata reading
@@ -91,17 +103,37 @@ export function MetadataReader() {
   }
 
   const getMetadataCategory = (key: string) => {
-    if (key.includes('GPS') || key.includes('Latitude') || key.includes('Longitude')) {
+    // GPS & Standort
+    if (key.includes('GPS') || key.includes('Latitude') || key.includes('Longitude') || 
+        key.includes('Altitude') || key.includes('GPSLatitude') || key.includes('GPSLongitude')) {
       return { icon: MapPin, label: 'GPS & Standort', color: 'text-blue-600' }
     }
-    if (key.includes('DateTime') || key.includes('Date') || key.includes('Time')) {
+    // Zeit & Datum
+    if (key.includes('DateTime') || key.includes('Date') || key.includes('Time') || 
+        key.includes('CreateDate') || key.includes('ModifyDate') || key.includes('DateTimeOriginal')) {
       return { icon: Calendar, label: 'Zeit & Datum', color: 'text-green-600' }
     }
-    if (key.includes('Camera') || key.includes('Lens') || key.includes('Focal') || key.includes('Aperture') || key.includes('ISO')) {
+    // Kamera & Aufnahme
+    if (key.includes('Camera') || key.includes('Lens') || key.includes('Focal') || 
+        key.includes('Aperture') || key.includes('ISO') || key.includes('Exposure') ||
+        key.includes('Flash') || key.includes('WhiteBalance') || key.includes('FNumber')) {
       return { icon: Camera, label: 'Kamera & Aufnahme', color: 'text-purple-600' }
     }
-    if (key.includes('Software') || key.includes('Processing') || key.includes('Version')) {
+    // Software & Verarbeitung
+    if (key.includes('Software') || key.includes('Processing') || key.includes('Version') ||
+        key.includes('HostComputer') || key.includes('ColorSpace')) {
       return { icon: Settings, label: 'Software & Verarbeitung', color: 'text-orange-600' }
+    }
+    // Herkunft & Autor
+    if (key.includes('Artist') || key.includes('Copyright') || key.includes('Credit') ||
+        key.includes('By-line') || key.includes('Creator') || key.includes('Author') ||
+        key.includes('Owner') || key.includes('Contact')) {
+      return { icon: FileText, label: 'Herkunft & Autor', color: 'text-red-600' }
+    }
+    // Bildinformationen
+    if (key.includes('Width') || key.includes('Height') || key.includes('Resolution') ||
+        key.includes('Orientation') || key.includes('Compression') || key.includes('Quality')) {
+      return { icon: Image, label: 'Bildinformationen', color: 'text-indigo-600' }
     }
     return { icon: FileText, label: 'Allgemein', color: 'text-gray-600' }
   }
