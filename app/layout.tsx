@@ -83,6 +83,13 @@ export default function RootLayout({
                     <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png" />
                     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
                     <link rel="manifest" href="/site.webmanifest" />
+                    
+                    {/* Google AdSense */}
+                    <script
+                      async
+                      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7123559671201562"
+                      crossOrigin="anonymous"
+                    ></script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -229,13 +236,6 @@ export default function RootLayout({
       <body className={inter.className}>
         {children}
         
-                    {/* Google AdSense */}
-                    <Script
-                      async
-                      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7123559671201562"
-                      crossOrigin="anonymous"
-                    />
-                    
                     {/* Google Analytics - DSGVO konform */}
                     <Script
                       src="https://www.googletagmanager.com/gtag/js?id=G-N5R87TG11H"

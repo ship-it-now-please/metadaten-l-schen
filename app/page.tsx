@@ -82,8 +82,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Main Tools Section */}
-      <section id="tools" className="py-20 bg-gray-50">
+          {/* AdSense Test Ad */}
+          <section className="py-8 bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center">
+                <ins className="adsbygoogle"
+                     style={{display: 'block'}}
+                     data-ad-client="ca-pub-7123559671201562"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+              </div>
+            </div>
+          </section>
+
+          {/* Main Tools Section */}
+          <section id="tools" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
