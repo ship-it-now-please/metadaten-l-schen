@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { Upload, Download, Trash2, FileText, Image, File, AlertCircle, CheckCircle } from 'lucide-react'
-import { parse, gps } from 'exifr'
+import { parse, gps, strip } from 'exifr'
 import { PDFDocument } from 'pdf-lib'
 import { saveAs } from 'file-saver'
 
@@ -37,34 +37,45 @@ export function MetadataRemover() {
   }
 
   const processImage = async (file: File) => {
-    return new Promise<void>((resolve, reject) => {
-      const canvas = document.createElement('canvas')
-      const ctx = canvas.getContext('2d')
-      const img = new window.Image()
+    try {
+      // Use exifr's strip function to completely remove all metadata
+      const strippedBuffer = await strip(await file.arrayBuffer())
+      
+      // Create a clean blob from the stripped buffer
+      const cleanBlob = new Blob([strippedBuffer], { type: file.type })
+      
+      setProcessedFile(cleanBlob)
+      setSuccess(true)
+    } catch (err) {
+      // Fallback to canvas method if exifr strip fails
+      return new Promise<void>((resolve, reject) => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+        const img = new window.Image()
 
-      img.onload = () => {
-        canvas.width = img.width
-        canvas.height = img.height
-        
-        // Draw image without EXIF data - this completely strips all metadata
-        ctx?.drawImage(img, 0, 0)
-        
-        // Convert to blob with high quality but no metadata
-        canvas.toBlob((blob) => {
-          if (blob) {
-            setProcessedFile(blob)
-            setSuccess(true)
-            resolve()
-          } else {
-            reject(new Error('Canvas conversion failed'))
-          }
-        }, file.type, 0.95)
-      }
+        img.onload = () => {
+          canvas.width = img.width
+          canvas.height = img.height
+          
+          // Draw image without EXIF data - this completely strips all metadata
+          ctx?.drawImage(img, 0, 0)
+          
+          // Convert to blob with specific options to ensure no metadata
+          canvas.toBlob((blob) => {
+            if (blob) {
+              setProcessedFile(blob)
+              setSuccess(true)
+              resolve()
+            } else {
+              reject(new Error('Canvas conversion failed'))
+            }
+          }, file.type, 0.95)
+        }
 
-      img.onerror = () => reject(new Error('Image loading failed'))
-      // Use createObjectURL to load image without preserving metadata
-      img.src = URL.createObjectURL(file)
-    })
+        img.onerror = () => reject(new Error('Image loading failed'))
+        img.src = URL.createObjectURL(file)
+      })
+    }
   }
 
   const processPDF = async (file: File) => {
