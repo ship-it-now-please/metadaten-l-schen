@@ -462,6 +462,20 @@ export default function Home() {
         </div>
       </section>
 
+      {/* AdSense Banner */}
+      <section className="py-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <ins className="adsbygoogle"
+                 style={{display: 'block'}}
+                 data-ad-client="ca-pub-7123559671201562"
+                 data-ad-slot="1234567890"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

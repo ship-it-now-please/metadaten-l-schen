@@ -229,6 +229,13 @@ export default function RootLayout({
       <body className={inter.className}>
         {children}
         
+                    {/* Google AdSense */}
+                    <Script
+                      async
+                      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7123559671201562"
+                      crossOrigin="anonymous"
+                    />
+                    
                     {/* Google Analytics - DSGVO konform */}
                     <Script
                       src="https://www.googletagmanager.com/gtag/js?id=G-N5R87TG11H"
