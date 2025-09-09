@@ -267,6 +267,13 @@ export function MetadataRemover() {
             </ul>
           </div>
         </div>
+        <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded">
+          <h4 className="font-medium text-yellow-800 mb-1">Hinweis zu "Where from" Feldern:</h4>
+          <p className="text-sm text-yellow-700">
+            "Where from" Felder sind macOS-spezifische Attribute, die nicht im Dateiinhalt gespeichert werden. 
+            Diese können nur über Terminal-Befehle entfernt werden: <code className="bg-yellow-100 px-1 rounded">xattr -d com.apple.metadata:kMDItemWhereFroms dateiname.png</code>
+          </p>
+        </div>
       </div>
 
       {/* Privacy Notice */}
