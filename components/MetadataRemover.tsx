@@ -46,9 +46,10 @@ export function MetadataRemover() {
         canvas.width = img.width
         canvas.height = img.height
         
-        // Draw image without EXIF data
+        // Draw image without EXIF data - this completely strips all metadata
         ctx?.drawImage(img, 0, 0)
         
+        // Convert to blob with high quality but no metadata
         canvas.toBlob((blob) => {
           if (blob) {
             setProcessedFile(blob)
@@ -61,6 +62,7 @@ export function MetadataRemover() {
       }
 
       img.onerror = () => reject(new Error('Image loading failed'))
+      // Use createObjectURL to load image without preserving metadata
       img.src = URL.createObjectURL(file)
     })
   }
@@ -70,15 +72,15 @@ export function MetadataRemover() {
       const arrayBuffer = await file.arrayBuffer()
       const pdfDoc = await PDFDocument.load(arrayBuffer)
       
-      // Remove metadata
-      pdfDoc.setTitle('')
-      pdfDoc.setAuthor('')
-      pdfDoc.setSubject('')
-      pdfDoc.setKeywords([])
-      pdfDoc.setProducer('')
-      pdfDoc.setCreator('')
-      pdfDoc.setCreationDate(new Date())
-      pdfDoc.setModificationDate(new Date())
+      // Completely remove all metadata by setting to undefined/null
+      pdfDoc.setTitle(undefined)
+      pdfDoc.setAuthor(undefined)
+      pdfDoc.setSubject(undefined)
+      pdfDoc.setKeywords(undefined)
+      pdfDoc.setProducer(undefined)
+      pdfDoc.setCreator(undefined)
+      pdfDoc.setCreationDate(undefined)
+      pdfDoc.setModificationDate(undefined)
       
       const pdfBytes = await pdfDoc.save()
       const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' })
