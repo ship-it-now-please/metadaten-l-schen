@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { Upload, Download, Trash2, FileText, Image, File, AlertCircle, CheckCircle } from 'lucide-react'
+import { Upload, Download, Trash2, FileText, File, AlertCircle, CheckCircle } from 'lucide-react'
 import { PDFDocument } from 'pdf-lib'
 import { saveAs } from 'file-saver'
 
@@ -139,7 +139,7 @@ export function MetadataRemover() {
   }
 
   const getFileIcon = (fileType: string) => {
-    if (fileType.startsWith('image/')) return Image
+    if (fileType.startsWith('image/')) return File
     if (fileType === 'application/pdf') return FileText
     return File
   }

@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react'
 import Link from 'next/link'
-import { Upload, Download, Eye, Trash2, FileText, Image, File, AlertCircle, CheckCircle, Shield, Lock, Zap, Star, Users, Clock, Smartphone, Camera, MapPin, Calendar, Settings, ArrowRight } from 'lucide-react'
+import { Upload, Download, Eye, Trash2, FileText, File, AlertCircle, CheckCircle, Shield, Lock, Zap, Star, Users, Clock, Smartphone, Camera, MapPin, Calendar, Settings, ArrowRight } from 'lucide-react'
 import { MetadataReader } from '@/components/MetadataReader'
 import { MetadataRemover } from '@/components/MetadataRemover'
 
@@ -281,7 +281,7 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl text-center shadow-lg">
-              <Image className="w-16 h-16 mx-auto mb-6 text-blue-600" />
+              <File className="w-16 h-16 mx-auto mb-6 text-blue-600" />
               <h3 className="text-xl font-bold mb-3">Bildformate</h3>
               <p className="text-gray-600 mb-4"><strong>JPG, JPEG, PNG, TIFF</strong></p>
               <p className="text-sm text-gray-500">EXIF Daten auslesen und entfernen</p>

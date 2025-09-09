@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { Upload, Eye, FileText, MapPin, Calendar, Camera, Settings, AlertCircle } from 'lucide-react'
+import { Upload, Eye, FileText, MapPin, Calendar, Camera, Settings, AlertCircle, File } from 'lucide-react'
 import { PDFDocument } from 'pdf-lib'
 
 interface MetadataInfo {
@@ -165,7 +165,7 @@ export function MetadataReader() {
     if (key.includes('Width') || key.includes('Height') || key.includes('Resolution') ||
         key.includes('Orientation') || key.includes('Compression') || key.includes('Quality') ||
         key.includes('Page Count')) {
-      return { icon: Image, label: 'Dokumentinformationen', color: 'text-indigo-600' }
+      return { icon: File, label: 'Dokumentinformationen', color: 'text-indigo-600' }
     }
     // PDF-spezifische Metadaten
     if (key.includes('Keywords')) {
