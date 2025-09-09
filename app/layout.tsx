@@ -248,26 +248,8 @@ export default function RootLayout({
                         function gtag(){dataLayer.push(arguments);}
                         gtag('js', new Date());
                         
-                        // DSGVO-konforme Consent-Verwaltung
-                        gtag('consent', 'default', {
-                          'analytics_storage': 'denied',
-                          'ad_storage': 'denied',
-                          'functionality_storage': 'denied',
-                          'personalization_storage': 'denied',
-                          'security_storage': 'granted'
-                        });
-                        
-                        // Nur laden wenn Consent erteilt
-                        const cookieConsent = localStorage.getItem('cookieConsent');
-                        if (cookieConsent) {
-                          const consent = JSON.parse(cookieConsent);
-                          if (consent.analytics) {
-                            gtag('consent', 'update', {
-                              'analytics_storage': 'granted'
-                            });
-                            gtag('config', 'G-N5R87TG11H');
-                          }
-                        }
+                        // Google CMP übernimmt Consent-Verwaltung
+                        gtag('config', 'G-N5R87TG11H');
                       `}
                     </Script>
       </body>
