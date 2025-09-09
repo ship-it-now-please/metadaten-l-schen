@@ -19,12 +19,12 @@ export default function Home() {
                 metadaten-löschen.de
               </h1>
             </div>
-            <nav className="hidden md:flex space-x-8">
-              <a href="#tools" className="text-gray-600 hover:text-gray-900 font-medium">EXIF Tools</a>
-              <a href="#formats" className="text-gray-600 hover:text-gray-900 font-medium">Formate</a>
-              <a href="#faq" className="text-gray-600 hover:text-gray-900 font-medium">FAQ</a>
-              <a href="#about" className="text-gray-600 hover:text-gray-900 font-medium">Über uns</a>
-            </nav>
+                        <nav className="hidden md:flex space-x-8">
+                          <a href="#tools" className="text-gray-600 hover:text-gray-900 font-medium">EXIF Tools</a>
+                          <a href="/pdf-metadaten-entfernen" className="text-gray-600 hover:text-gray-900 font-medium">PDF Metadaten</a>
+                          <a href="/exif-daten-loeschen" className="text-gray-600 hover:text-gray-900 font-medium">EXIF löschen</a>
+                          <a href="#faq" className="text-gray-600 hover:text-gray-900 font-medium">FAQ</a>
+                        </nav>
           </div>
         </div>
       </header>
