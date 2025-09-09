@@ -31,8 +31,8 @@ export function CookieBanner() {
     setShowBanner(false)
     
     // Enable Google Analytics
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('consent', 'update', {
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('consent', 'update', {
         analytics_storage: 'granted'
       })
     }
@@ -50,8 +50,8 @@ export function CookieBanner() {
     setShowBanner(false)
     
     // Disable Google Analytics
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('consent', 'update', {
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('consent', 'update', {
         analytics_storage: 'denied'
       })
     }
@@ -69,8 +69,8 @@ export function CookieBanner() {
     setShowSettings(false)
     
     // Update Google Analytics consent
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('consent', 'update', {
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('consent', 'update', {
         analytics_storage: analyticsEnabled ? 'granted' : 'denied'
       })
     }
