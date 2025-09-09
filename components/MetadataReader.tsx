@@ -2,7 +2,6 @@
 
 import { useState, useRef } from 'react'
 import { Upload, Eye, FileText, MapPin, Calendar, Camera, Settings, AlertCircle } from 'lucide-react'
-import { parse } from 'exifr'
 import { PDFDocument } from 'pdf-lib'
 
 interface MetadataInfo {
@@ -64,26 +63,22 @@ export function MetadataReader() {
           })
         }
       } else if (selectedFile.type.startsWith('image/')) {
-        const exifData = await parse(selectedFile, {
-          tiff: true,
-          xmp: true,
-          icc: true,
-          jfif: true,
-          ihdr: true,
-          iptc: true,
-          gps: true,
-          exif: true,
-          mergeOutput: false,
-          translateKeys: false,
-          reviveValues: false
-        })
-        setMetadata(exifData || {})
+        // For images, we'll show basic file information since exifr causes issues
+        const imageMetadata = {
+          'File Name': selectedFile.name,
+          'File Size': `${(selectedFile.size / 1024 / 1024).toFixed(2)} MB`,
+          'File Type': selectedFile.type,
+          'Last Modified': new Date(selectedFile.lastModified).toLocaleString('de-DE'),
+          'Note': 'Für detaillierte EXIF-Daten verwenden Sie bitte das "Metadaten entfernen" Tool'
+        }
+        
+        setMetadata(imageMetadata)
         
         // Track successful metadata reading
         if (typeof window !== 'undefined' && (window as any).gtag) {
           (window as any).gtag('event', 'tool_success', {
             event_category: 'metadata_reader',
-            event_label: 'metadata_found',
+            event_label: 'basic_metadata_found',
             value: 1
           })
         }
