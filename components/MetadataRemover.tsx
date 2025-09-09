@@ -2,7 +2,6 @@
 
 import { useState, useRef } from 'react'
 import { Upload, Download, Trash2, FileText, Image, File, AlertCircle, CheckCircle } from 'lucide-react'
-import { parse, gps } from 'exifr'
 import { PDFDocument } from 'pdf-lib'
 import { saveAs } from 'file-saver'
 
