@@ -31,31 +31,7 @@ export function MetadataReader() {
     }
 
     try {
-      if (selectedFile.type.startsWith('image/')) {
-        const exifData = await parse(selectedFile, {
-          tiff: true,
-          xmp: true,
-          icc: true,
-          jfif: true,
-          ihdr: true,
-          iptc: true,
-          gps: true,
-          exif: true,
-          mergeOutput: false,
-          translateKeys: false,
-          reviveValues: false
-        })
-        setMetadata(exifData || {})
-        
-        // Track successful metadata reading
-        if (typeof window !== 'undefined' && (window as any).gtag) {
-          (window as any).gtag('event', 'tool_success', {
-            event_category: 'metadata_reader',
-            event_label: 'metadata_found',
-            value: 1
-          })
-        }
-      } else if (selectedFile.type === 'application/pdf') {
+      if (selectedFile.type === 'application/pdf') {
         const arrayBuffer = await selectedFile.arrayBuffer()
         const pdfDoc = await PDFDocument.load(arrayBuffer)
         
@@ -84,6 +60,30 @@ export function MetadataReader() {
           (window as any).gtag('event', 'tool_success', {
             event_category: 'metadata_reader',
             event_label: 'pdf_metadata_found',
+            value: 1
+          })
+        }
+      } else if (selectedFile.type.startsWith('image/')) {
+        const exifData = await parse(selectedFile, {
+          tiff: true,
+          xmp: true,
+          icc: true,
+          jfif: true,
+          ihdr: true,
+          iptc: true,
+          gps: true,
+          exif: true,
+          mergeOutput: false,
+          translateKeys: false,
+          reviveValues: false
+        })
+        setMetadata(exifData || {})
+        
+        // Track successful metadata reading
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          (window as any).gtag('event', 'tool_success', {
+            event_category: 'metadata_reader',
+            event_label: 'metadata_found',
             value: 1
           })
         }
