@@ -87,14 +87,19 @@ export function MetadataRemover() {
         canvas.width = img.width
         canvas.height = img.height
         
+        // For PNG with transparency, fill with white background before drawing
+        if (file.type === 'image/png') {
+          ctx?.fillStyle = '#FFFFFF'
+          ctx?.fillRect(0, 0, canvas.width, canvas.height)
+        }
+        
         // Draw image without EXIF data - this completely strips all metadata
         ctx?.drawImage(img, 0, 0)
         
-        // For PNG files, we need to ensure no text chunks are preserved
+        // For PNG files, convert to JPEG to ensure complete metadata removal
         let outputType = file.type
         let quality = 0.95
         
-        // For PNG, we might want to convert to JPEG to ensure complete metadata removal
         if (file.type === 'image/png') {
           outputType = 'image/jpeg'
           quality = 0.92
@@ -269,7 +274,8 @@ export function MetadataRemover() {
             Die Dateiqualität bleibt unverändert.
             {file?.type === 'image/png' && (
               <span className="block mt-2 text-sm text-orange-700">
-                <strong>Hinweis:</strong> PNG-Dateien werden zu JPEG konvertiert, um alle Metadaten vollständig zu entfernen.
+                <strong>Hinweis:</strong> PNG-Dateien werden zu JPEG konvertiert, um alle Metadaten vollständig zu entfernen. 
+                Transparenz wird durch weißen Hintergrund ersetzt.
               </span>
             )}
           </p>
