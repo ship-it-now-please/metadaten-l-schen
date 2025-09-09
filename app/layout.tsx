@@ -76,6 +76,7 @@ export default function RootLayout({
                     <link rel="canonical" href="https://metadaten-löschen.de" />
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
                     <meta name="theme-color" content="#2563eb" />
+                    <meta name="google-adsense-account" content="ca-pub-7123559671201562" />
                     
                     {/* Favicon and App Icons */}
                     <link rel="icon" href="/favicon.ico" sizes="any" />
