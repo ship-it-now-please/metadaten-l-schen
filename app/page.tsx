@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import Link from 'next/link'
 import { Upload, Download, Eye, Trash2, FileText, Image, File, AlertCircle, CheckCircle, Shield, Lock, Zap, Star, Users, Clock, Smartphone, Camera, MapPin, Calendar, Settings } from 'lucide-react'
 import { MetadataReader } from '@/components/MetadataReader'
 import { MetadataRemover } from '@/components/MetadataRemover'
