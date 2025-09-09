@@ -24,6 +24,7 @@ export default function Home() {
                           <a href="/pdf-metadaten-entfernen" className="text-gray-600 hover:text-gray-900 font-medium">PDF Metadaten</a>
                           <a href="/exif-daten-loeschen" className="text-gray-600 hover:text-gray-900 font-medium">EXIF löschen</a>
                           <a href="#faq" className="text-gray-600 hover:text-gray-900 font-medium">FAQ</a>
+                          <a href="/exif-daten-iphone-loeschen" className="text-gray-600 hover:text-gray-900 font-medium">iPhone Guide</a>
                         </nav>
           </div>
         </div>
@@ -428,8 +429,78 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Blog Section */}
+      <section id="blog" className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Anleitungen & Guides
+            </h2>
+            <p className="text-lg text-gray-600">
+              Detaillierte Anleitungen zum Entfernen von Metadaten auf verschiedenen Geräten
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            <article className="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+              <div className="mb-4">
+                <Smartphone className="w-12 h-12 text-blue-600 mx-auto" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                EXIF Daten iPhone löschen
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Komplette Anleitung für iPhone-Nutzer. Schützen Sie Ihre Privatsphäre auf iOS-Geräten.
+              </p>
+              <Link 
+                href="/exif-daten-iphone-loeschen" 
+                className="text-blue-600 hover:text-blue-800 font-medium"
+              >
+                Anleitung lesen →
+              </Link>
+            </article>
+
+            <article className="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+              <div className="mb-4">
+                <FileText className="w-12 h-12 text-green-600 mx-auto" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                PDF Metadaten entfernen
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Anleitung für Anfänger. Entfernen Sie Autor, Erstellungsdatum und sensible Daten aus PDFs.
+              </p>
+              <Link 
+                href="/pdf-metadaten-entfernen-anleitung" 
+                className="text-blue-600 hover:text-blue-800 font-medium"
+              >
+                Anleitung lesen →
+              </Link>
+            </article>
+
+            <article className="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+              <div className="mb-4">
+                <Smartphone className="w-12 h-12 text-orange-600 mx-auto" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                EXIF Daten Android löschen
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Komplette Anleitung für Android-Geräte. Schützen Sie Ihre Privatsphäre auf Android.
+              </p>
+              <Link 
+                href="/exif-daten-android-loeschen" 
+                className="text-blue-600 hover:text-blue-800 font-medium"
+              >
+                Anleitung lesen →
+              </Link>
+            </article>
+          </div>
+        </div>
+      </section>
+
       {/* About Section */}
-      <section id="about" className="py-20 bg-white">
+      <section id="about" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-6">
