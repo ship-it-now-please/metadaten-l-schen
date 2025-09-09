@@ -20,15 +20,49 @@ export function MetadataReader() {
     setError(null)
     setLoading(true)
 
+    // Track tool usage
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'tool_usage', {
+        event_category: 'metadata_reader',
+        event_label: 'file_upload',
+        value: 1
+      })
+    }
+
     try {
       if (selectedFile.type.startsWith('image/')) {
         const exifData = await parse(selectedFile)
         setMetadata(exifData || {})
+        
+        // Track successful metadata reading
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          (window as any).gtag('event', 'tool_success', {
+            event_category: 'metadata_reader',
+            event_label: 'metadata_found',
+            value: 1
+          })
+        }
       } else {
         setError('Nur Bilddateien werden für die Metadaten-Anzeige unterstützt.')
+        // Track unsupported file type
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          (window as any).gtag('event', 'tool_error', {
+            event_category: 'metadata_reader',
+            event_label: 'unsupported_file_type',
+            value: 1
+          })
+        }
       }
     } catch (err) {
       setError('Fehler beim Lesen der Metadaten. Bitte versuchen Sie es mit einer anderen Datei.')
+      // Track error
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'tool_error', {
+          event_category: 'metadata_reader',
+          event_label: 'read_error',
+          value: 1
+        })
+      }
     } finally {
       setLoading(false)
     }

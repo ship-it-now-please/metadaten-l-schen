@@ -21,16 +21,57 @@ export function MetadataRemover() {
     setProcessedFile(null)
     setLoading(true)
 
+    // Track tool usage
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'tool_usage', {
+        event_category: 'metadata_remover',
+        event_label: 'file_upload',
+        value: 1
+      })
+    }
+
     try {
       if (selectedFile.type.startsWith('image/')) {
         await processImage(selectedFile)
+        // Track successful image processing
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          (window as any).gtag('event', 'tool_success', {
+            event_category: 'metadata_remover',
+            event_label: 'image_processed',
+            value: 1
+          })
+        }
       } else if (selectedFile.type === 'application/pdf') {
         await processPDF(selectedFile)
+        // Track successful PDF processing
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          (window as any).gtag('event', 'tool_success', {
+            event_category: 'metadata_remover',
+            event_label: 'pdf_processed',
+            value: 1
+          })
+        }
       } else {
         setError('Unterstützte Formate: JPG, PNG, TIFF, PDF')
+        // Track unsupported file type
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          (window as any).gtag('event', 'tool_error', {
+            event_category: 'metadata_remover',
+            event_label: 'unsupported_file_type',
+            value: 1
+          })
+        }
       }
     } catch (err) {
       setError('Fehler beim Verarbeiten der Datei. Bitte versuchen Sie es erneut.')
+      // Track error
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'tool_error', {
+          event_category: 'metadata_remover',
+          event_label: 'processing_error',
+          value: 1
+        })
+      }
     } finally {
       setLoading(false)
     }
@@ -110,6 +151,15 @@ export function MetadataRemover() {
       const extension = file.name.split('.').pop()
       const newName = file.name.replace(/\.[^/.]+$/, `_ohne_metadaten.${extension}`)
       saveAs(processedFile, newName)
+      
+      // Track successful download
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'tool_download', {
+          event_category: 'metadata_remover',
+          event_label: 'file_downloaded',
+          value: 1
+        })
+      }
     }
   }
 
