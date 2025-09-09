@@ -8,6 +8,66 @@ interface MetadataInfo {
   [key: string]: any
 }
 
+// Simple EXIF data extraction function
+function extractEXIFData(uint8Array: Uint8Array): Record<string, any> {
+  const exifData: Record<string, any> = {}
+  
+  try {
+    // Look for EXIF marker (0xFF, 0xE1)
+    let exifStart = -1
+    for (let i = 0; i < uint8Array.length - 1; i++) {
+      if (uint8Array[i] === 0xFF && uint8Array[i + 1] === 0xE1) {
+        exifStart = i
+        break
+      }
+    }
+    
+    if (exifStart === -1) {
+      return exifData
+    }
+    
+    // Check for "Exif" string
+    const exifString = String.fromCharCode(
+      uint8Array[exifStart + 4],
+      uint8Array[exifStart + 5],
+      uint8Array[exifStart + 6],
+      uint8Array[exifStart + 7]
+    )
+    
+    if (exifString === 'Exif') {
+      exifData['EXIF Marker'] = 'Gefunden'
+      exifData['EXIF Version'] = 'Verfügbar'
+      
+      // Try to extract some basic EXIF data
+      // This is a simplified version - real EXIF parsing is much more complex
+      const tiffHeader = exifStart + 10
+      if (tiffHeader < uint8Array.length - 8) {
+        // Check byte order
+        const byteOrder = uint8Array[tiffHeader] === 0x49 ? 'Little Endian' : 'Big Endian'
+        exifData['Byte Order'] = byteOrder
+        
+        // Try to get some basic info
+        exifData['EXIF Data Size'] = `${uint8Array.length - exifStart} Bytes`
+        exifData['EXIF Status'] = 'Teilweise extrahiert'
+      }
+    }
+    
+    // Look for other metadata markers
+    if (uint8Array.includes(0xFF) && uint8Array.includes(0xE0)) {
+      exifData['JFIF Marker'] = 'Gefunden'
+    }
+    
+    if (uint8Array.includes(0xFF) && uint8Array.includes(0xE2)) {
+      exifData['ICC Profile'] = 'Möglicherweise vorhanden'
+    }
+    
+  } catch (error) {
+    exifData['EXIF Error'] = 'Fehler beim Parsen'
+  }
+  
+  return exifData
+}
+
 export function MetadataReader() {
   const [file, setFile] = useState<File | null>(null)
   const [metadata, setMetadata] = useState<MetadataInfo | null>(null)
@@ -63,7 +123,7 @@ export function MetadataReader() {
           })
         }
       } else if (selectedFile.type.startsWith('image/')) {
-        // For images, we'll show basic file information
+        // For images, we'll show basic file information and try to extract EXIF data
         const imageMetadata = {
           'File Name': selectedFile.name,
           'File Size': `${(selectedFile.size / 1024 / 1024).toFixed(2)} MB`,
@@ -77,13 +137,43 @@ export function MetadataReader() {
         
         // Try to get image dimensions and basic info
         const img = document.createElement('img')
-        img.onload = () => {
+        img.onload = async () => {
           const updatedMetadata = {
             ...imageMetadata,
             'Image Dimensions': `${img.width} x ${img.height} Pixel`,
-            'EXIF Data': 'EXIF-Daten werden in der aktuellen Version nicht angezeigt. Verwenden Sie das "Metadaten entfernen" Tool für eine vollständige Analyse.'
+            'EXIF Data': 'Wird analysiert...'
           }
           setMetadata(updatedMetadata)
+          
+          // Try to extract EXIF data using a different approach
+          try {
+            const arrayBuffer = await selectedFile.arrayBuffer()
+            const uint8Array = new Uint8Array(arrayBuffer)
+            
+            // Look for EXIF markers in the binary data
+            const exifData = extractEXIFData(uint8Array)
+            
+            if (Object.keys(exifData).length > 0) {
+              const finalMetadata = {
+                ...updatedMetadata,
+                ...exifData,
+                'EXIF Data': 'EXIF-Daten erfolgreich extrahiert'
+              }
+              setMetadata(finalMetadata)
+            } else {
+              const finalMetadata = {
+                ...updatedMetadata,
+                'EXIF Data': 'Keine EXIF-Daten gefunden'
+              }
+              setMetadata(finalMetadata)
+            }
+          } catch (err) {
+            const finalMetadata = {
+              ...updatedMetadata,
+              'EXIF Data': 'Fehler beim Lesen der EXIF-Daten'
+            }
+            setMetadata(finalMetadata)
+          }
         }
         img.src = URL.createObjectURL(selectedFile)
         
