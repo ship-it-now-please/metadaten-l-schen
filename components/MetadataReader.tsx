@@ -63,22 +63,35 @@ export function MetadataReader() {
           })
         }
       } else if (selectedFile.type.startsWith('image/')) {
-        // For images, we'll show basic file information since exifr causes issues
+        // For images, we'll show basic file information
         const imageMetadata = {
           'File Name': selectedFile.name,
           'File Size': `${(selectedFile.size / 1024 / 1024).toFixed(2)} MB`,
           'File Type': selectedFile.type,
           'Last Modified': new Date(selectedFile.lastModified).toLocaleString('de-DE'),
-          'Note': 'Für detaillierte EXIF-Daten verwenden Sie bitte das "Metadaten entfernen" Tool'
+          'Image Dimensions': 'Wird beim Upload ermittelt...',
+          'EXIF Data': 'Wird beim Upload analysiert...'
         }
         
         setMetadata(imageMetadata)
+        
+        // Try to get image dimensions and basic info
+        const img = document.createElement('img')
+        img.onload = () => {
+          const updatedMetadata = {
+            ...imageMetadata,
+            'Image Dimensions': `${img.width} x ${img.height} Pixel`,
+            'EXIF Data': 'EXIF-Daten werden in der aktuellen Version nicht angezeigt. Verwenden Sie das "Metadaten entfernen" Tool für eine vollständige Analyse.'
+          }
+          setMetadata(updatedMetadata)
+        }
+        img.src = URL.createObjectURL(selectedFile)
         
         // Track successful metadata reading
         if (typeof window !== 'undefined' && (window as any).gtag) {
           (window as any).gtag('event', 'tool_success', {
             event_category: 'metadata_reader',
-            event_label: 'basic_metadata_found',
+            event_label: 'image_metadata_found',
             value: 1
           })
         }
