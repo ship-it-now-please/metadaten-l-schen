@@ -64,7 +64,7 @@ export function MetadataReader() {
           'Title': pdfDoc.getTitle() || '',
           'Author': pdfDoc.getAuthor() || '',
           'Subject': pdfDoc.getSubject() || '',
-          'Keywords': pdfDoc.getKeywords()?.join(', ') || '',
+          'Keywords': pdfDoc.getKeywords() || '',
           'Creator': pdfDoc.getCreator() || '',
           'Producer': pdfDoc.getProducer() || '',
           'Creation Date': pdfDoc.getCreationDate()?.toString() || '',
