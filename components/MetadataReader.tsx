@@ -69,7 +69,6 @@ export function MetadataReader() {
           'Producer': pdfDoc.getProducer() || '',
           'Creation Date': pdfDoc.getCreationDate()?.toString() || '',
           'Modification Date': pdfDoc.getModificationDate()?.toString() || '',
-          'PDF Version': pdfDoc.getVersion() || '',
           'Page Count': pdfDoc.getPageCount() || 0
         }
         
