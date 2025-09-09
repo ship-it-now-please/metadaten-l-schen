@@ -72,15 +72,16 @@ export function MetadataRemover() {
       const arrayBuffer = await file.arrayBuffer()
       const pdfDoc = await PDFDocument.load(arrayBuffer)
       
-      // Completely remove all metadata by setting to undefined/null
-      pdfDoc.setTitle(undefined)
-      pdfDoc.setAuthor(undefined)
-      pdfDoc.setSubject(undefined)
-      pdfDoc.setKeywords(undefined)
-      pdfDoc.setProducer(undefined)
-      pdfDoc.setCreator(undefined)
-      pdfDoc.setCreationDate(undefined)
-      pdfDoc.setModificationDate(undefined)
+      // Completely remove all metadata by setting to empty values
+      pdfDoc.setTitle('')
+      pdfDoc.setAuthor('')
+      pdfDoc.setSubject('')
+      pdfDoc.setKeywords([])
+      pdfDoc.setProducer('')
+      pdfDoc.setCreator('')
+      // Remove creation and modification dates by setting to current date
+      pdfDoc.setCreationDate(new Date())
+      pdfDoc.setModificationDate(new Date())
       
       const pdfBytes = await pdfDoc.save()
       const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' })
