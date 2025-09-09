@@ -6,8 +6,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'EXIF Daten löschen & Metadaten entfernen - Kostenloses Online Tool | metadaten-löschen.de',
-  description: 'Kostenloses EXIF Daten Tool zum Auslesen und Löschen von Metadaten aus Bildern, PDFs und Videos. EXIF Daten auslesen, Metadaten aus Bildern entfernen, PDF Metadaten entfernen. 100% kostenlos & sicher!',
+  title: 'Metadaten löschen - Kostenloses Online Tool | EXIF Daten entfernen',
+  description: 'Metadaten löschen kostenlos & sicher! EXIF Daten aus Bildern entfernen, PDF Metadaten löschen. 100% kostenlos, sofort verfügbar, lokale Verarbeitung.',
   keywords: 'exif daten, exif daten löschen, exif daten auslesen, exif daten ändern, metadaten entfernen, metadaten auslesen, metadaten löschen, pdf metadaten entfernen, exif daten online, exif daten tool, metadaten aus bildern entfernen, exif daten auslesen online, exif daten entfernen, metadaten tool, exif metadaten, exif daten auslesen tool, metadaten aus bildern, exif daten löschen online, exif daten bearbeiten, exif daten anzeigen, exif daten auslesen mac, exif daten auslesen windows, exif daten auslesen android, exif daten auslesen iphone, datenschutz, privatsphäre, kostenlos, online tool',
   authors: [{ name: 'EXIF Daten Tool Team' }],
   creator: 'metadaten-löschen.de',
