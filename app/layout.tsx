@@ -229,19 +229,39 @@ export default function RootLayout({
       <body className={inter.className}>
         {children}
         
-        {/* Google Analytics */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-N5R87TG11H"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-N5R87TG11H');
-          `}
-        </Script>
+                    {/* Google Analytics - DSGVO konform */}
+                    <Script
+                      src="https://www.googletagmanager.com/gtag/js?id=G-N5R87TG11H"
+                      strategy="afterInteractive"
+                    />
+                    <Script id="google-analytics" strategy="afterInteractive">
+                      {`
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag(){dataLayer.push(arguments);}
+                        gtag('js', new Date());
+                        
+                        // DSGVO-konforme Consent-Verwaltung
+                        gtag('consent', 'default', {
+                          'analytics_storage': 'denied',
+                          'ad_storage': 'denied',
+                          'functionality_storage': 'denied',
+                          'personalization_storage': 'denied',
+                          'security_storage': 'granted'
+                        });
+                        
+                        // Nur laden wenn Consent erteilt
+                        const cookieConsent = localStorage.getItem('cookieConsent');
+                        if (cookieConsent) {
+                          const consent = JSON.parse(cookieConsent);
+                          if (consent.analytics) {
+                            gtag('consent', 'update', {
+                              'analytics_storage': 'granted'
+                            });
+                            gtag('config', 'G-N5R87TG11H');
+                          }
+                        }
+                      `}
+                    </Script>
       </body>
     </html>
   )

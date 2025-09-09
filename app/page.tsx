@@ -4,6 +4,7 @@ import { useState, useRef } from 'react'
 import { Upload, Download, Eye, Trash2, FileText, Image, File, AlertCircle, CheckCircle, Shield, Lock, Zap, Star, Users, Clock, Smartphone, Camera, MapPin, Calendar, Settings } from 'lucide-react'
 import { MetadataReader } from '@/components/MetadataReader'
 import { MetadataRemover } from '@/components/MetadataRemover'
+import { CookieBanner } from '@/components/CookieBanner'
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'read' | 'remove'>('read')
@@ -517,6 +518,9 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      
+      {/* Cookie Banner */}
+      <CookieBanner />
     </div>
   )
 }
