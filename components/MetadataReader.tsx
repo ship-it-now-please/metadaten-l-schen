@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react'
 import { Upload, Eye, FileText, MapPin, Calendar, Camera, Settings, AlertCircle } from 'lucide-react'
 import { parse } from 'exifr'
+import { PDFDocument } from 'pdf-lib'
 
 interface MetadataInfo {
   [key: string]: any
@@ -54,8 +55,41 @@ export function MetadataReader() {
             value: 1
           })
         }
+      } else if (selectedFile.type === 'application/pdf') {
+        const arrayBuffer = await selectedFile.arrayBuffer()
+        const pdfDoc = await PDFDocument.load(arrayBuffer)
+        
+        // Extract PDF metadata
+        const pdfMetadata = {
+          'Title': pdfDoc.getTitle() || '',
+          'Author': pdfDoc.getAuthor() || '',
+          'Subject': pdfDoc.getSubject() || '',
+          'Keywords': pdfDoc.getKeywords().join(', ') || '',
+          'Creator': pdfDoc.getCreator() || '',
+          'Producer': pdfDoc.getProducer() || '',
+          'Creation Date': pdfDoc.getCreationDate()?.toString() || '',
+          'Modification Date': pdfDoc.getModificationDate()?.toString() || '',
+          'PDF Version': pdfDoc.getVersion() || '',
+          'Page Count': pdfDoc.getPageCount() || 0
+        }
+        
+        // Remove empty values
+        const filteredMetadata = Object.fromEntries(
+          Object.entries(pdfMetadata).filter(([_, value]) => value !== '' && value !== 0)
+        )
+        
+        setMetadata(filteredMetadata)
+        
+        // Track successful metadata reading
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          (window as any).gtag('event', 'tool_success', {
+            event_category: 'metadata_reader',
+            event_label: 'pdf_metadata_found',
+            value: 1
+          })
+        }
       } else {
-        setError('Nur Bilddateien werden für die Metadaten-Anzeige unterstützt.')
+        setError('Unterstützte Formate: JPG, PNG, TIFF, PDF')
         // Track unsupported file type
         if (typeof window !== 'undefined' && (window as any).gtag) {
           (window as any).gtag('event', 'tool_error', {
@@ -110,7 +144,8 @@ export function MetadataReader() {
     }
     // Zeit & Datum
     if (key.includes('DateTime') || key.includes('Date') || key.includes('Time') || 
-        key.includes('CreateDate') || key.includes('ModifyDate') || key.includes('DateTimeOriginal')) {
+        key.includes('CreateDate') || key.includes('ModifyDate') || key.includes('DateTimeOriginal') ||
+        key.includes('Creation Date') || key.includes('Modification Date')) {
       return { icon: Calendar, label: 'Zeit & Datum', color: 'text-green-600' }
     }
     // Kamera & Aufnahme
@@ -121,19 +156,26 @@ export function MetadataReader() {
     }
     // Software & Verarbeitung
     if (key.includes('Software') || key.includes('Processing') || key.includes('Version') ||
-        key.includes('HostComputer') || key.includes('ColorSpace')) {
+        key.includes('HostComputer') || key.includes('ColorSpace') || key.includes('PDF Version') ||
+        key.includes('Producer') || key.includes('Creator')) {
       return { icon: Settings, label: 'Software & Verarbeitung', color: 'text-orange-600' }
     }
     // Herkunft & Autor
     if (key.includes('Artist') || key.includes('Copyright') || key.includes('Credit') ||
         key.includes('By-line') || key.includes('Creator') || key.includes('Author') ||
-        key.includes('Owner') || key.includes('Contact')) {
+        key.includes('Owner') || key.includes('Contact') || key.includes('Title') ||
+        key.includes('Subject')) {
       return { icon: FileText, label: 'Herkunft & Autor', color: 'text-red-600' }
     }
     // Bildinformationen
     if (key.includes('Width') || key.includes('Height') || key.includes('Resolution') ||
-        key.includes('Orientation') || key.includes('Compression') || key.includes('Quality')) {
-      return { icon: Image, label: 'Bildinformationen', color: 'text-indigo-600' }
+        key.includes('Orientation') || key.includes('Compression') || key.includes('Quality') ||
+        key.includes('Page Count')) {
+      return { icon: Image, label: 'Dokumentinformationen', color: 'text-indigo-600' }
+    }
+    // PDF-spezifische Metadaten
+    if (key.includes('Keywords')) {
+      return { icon: FileText, label: 'Schlüsselwörter', color: 'text-cyan-600' }
     }
     return { icon: FileText, label: 'Allgemein', color: 'text-gray-600' }
   }
@@ -154,7 +196,7 @@ export function MetadataReader() {
           Metadaten anzeigen
         </h2>
         <p className="text-lg text-gray-600">
-          Laden Sie eine Bilddatei hoch, um alle enthaltenen Metadaten/EXIF-Daten anzuzeigen
+          Laden Sie eine Bilddatei oder PDF hoch, um alle enthaltenen Metadaten anzuzeigen
         </p>
       </div>
 
@@ -168,7 +210,7 @@ export function MetadataReader() {
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*"
+          accept="image/*,application/pdf"
           onChange={(e) => e.target.files?.[0] && handleFileSelect(e.target.files[0])}
           className="hidden"
         />
@@ -180,7 +222,7 @@ export function MetadataReader() {
               Datei hier ablegen oder klicken zum Auswählen
             </p>
             <p className="text-sm text-gray-500">
-              Unterstützte Formate: JPG, PNG, TIFF
+              Unterstützte Formate: JPG, PNG, TIFF, PDF
             </p>
           </div>
         ) : (
