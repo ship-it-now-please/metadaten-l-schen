@@ -60,23 +60,25 @@ export default function Home() {
             </div>
           </div>
           
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button 
-              onClick={() => setActiveTab('remove')}
-              className="bg-white text-blue-700 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition-colors shadow-lg"
-            >
-              <Trash2 className="w-6 h-6 inline mr-2" />
-              Jetzt EXIF Daten löschen
-            </button>
-            <button 
-              onClick={() => setActiveTab('read')}
-              className="bg-blue-500 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-400 transition-colors shadow-lg"
-            >
-              <Eye className="w-6 h-6 inline mr-2" />
-              Metadaten anzeigen
-            </button>
-          </div>
+                      {/* CTA Buttons */}
+                      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a
+                          href="#tools"
+                          onClick={() => setActiveTab('remove')}
+                          className="bg-white text-blue-700 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition-colors shadow-lg text-center"
+                        >
+                          <Trash2 className="w-6 h-6 inline mr-2" />
+                          Jetzt EXIF Daten löschen
+                        </a>
+                        <a
+                          href="#tools"
+                          onClick={() => setActiveTab('read')}
+                          className="bg-blue-500 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-400 transition-colors shadow-lg text-center"
+                        >
+                          <Eye className="w-6 h-6 inline mr-2" />
+                          Metadaten anzeigen
+                        </a>
+                      </div>
         </div>
       </section>
 
