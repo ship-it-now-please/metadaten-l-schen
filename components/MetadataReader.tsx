@@ -192,7 +192,7 @@ function detectScreenshotMetadata(uint8Array: Uint8Array): Record<string, any> {
     ]
     
     // Convert to string for pattern matching
-    const dataString = String.fromCharCode(...uint8Array.slice(0, Math.min(1000, uint8Array.length)))
+    const dataString = String.fromCharCode.apply(null, Array.from(uint8Array.slice(0, Math.min(1000, uint8Array.length))))
     
     for (const indicator of screenshotIndicators) {
       if (dataString.includes(indicator)) {
